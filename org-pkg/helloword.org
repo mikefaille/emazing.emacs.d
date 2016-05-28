@@ -1,0 +1,19 @@
+#+TITLE: Starter Kit Org
+#+OPTIONS: toc:nil num:nil ^:nil
+
+
+#+begin_quote
+"Artificial Intelligence usually beats natural stupidity."
+
+  -- Anon
+#+end_quote
+
+
+
+- Ubiquitous Packages which should be loaded on startup rather than
+  autoloaded on demand since they are likely to be used in every
+  session.
+  #+name: emazing-load-on-startup
+  #+begin_src emacs-lisp
+  (print 'Hello Word)
+  #+end_src

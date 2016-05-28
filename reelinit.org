@@ -1,0 +1,85 @@
+#+TITLE: Starter Kit Org
+#+OPTIONS: toc:nil num:nil ^:nil
+
+
+#+begin_quote
+  Emacs outshines all other editing software in approximately the same
+  way that the noonday sun does the stars. It is not just bigger and
+  brighter; it simply makes everything else vanish.
+
+  -- Neal Stephenson, "In the Beginning was the Command Line"
+#+end_quote
+
+
+
+
+* Where I am ?
+[[http://perdu.com/]]
+
+
+
+
+** Structure
+   :PROPERTIES:
+   :CUSTOM_ID: structure
+   :END:
+The =init.el= file is where everything begins. It is loaded
+automatically by Emacs on startup, its sole purpose is to load the
+elisp code embedded in this file.
+
+
+* Implementation
+** emazing basic
+- Load path etc.
+  #+name: emazing-load-paths
+  #+begin_src emacs-lisp
+    (add-to-list 'load-path emazing/org-pkg-dir)
+    (setq autoload-file (concat emazing/org-pkg-dir "loaddefs.el"))
+    (setq package-user-dir "elpa")
+    (setq custom-file (concat emazing/org-pkg-dir "custom.el"))
+  #+end_src
+
+- Ubiquitous Packages which should be loaded on startup rather than
+  autoloaded on demand since they are likely to be used in every
+  session.
+  #+name: emazing-load-on-startup
+  #+begin_src emacs-lisp
+    (require 'cl)
+    (require 'saveplace)
+    (require 'ffap)
+    (require 'uniquify)
+    (require 'ansi-color)
+    (require 'recentf)
+  #+end_src
+
+- ELPA archive repositories and two packages to install by default.
+  #+begin_src emacs-lisp
+
+
+    (require 'package)
+
+    (when (not package-archive-contents)
+      (package-refresh-contents))
+
+
+    ;; For important compatibility libraries like cl-lib
+    (add-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/"))
+
+    (add-to-list 'package-archives
+                 '("org" . "http://orgmode.org/elpa/") t)
+    (add-to-list 'package-archives '("marmalade" . "https://marmalade-repo.org/packages/"))
+    (add-to-list 'package-archives
+                 '("melpa" . "https://melpa.org/packages/"))
+    (add-to-list 'package-archives
+                 '("elpy" . "http://jorgenschaefer.github.io/packages/"))
+
+    (package-initialize)
+  #+end_src
+
+
+
+- Functions for loading other parts of the starter kit
+  #+name: starter-kit-load
+  #+begin_src emacs-lisp
+    (mapc #'org-babel-load-file (directory-files emazing/org-pkg-dir t "\\.org$"))
+  #+end_src
